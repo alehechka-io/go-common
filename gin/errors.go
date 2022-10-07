@@ -37,6 +37,5 @@ func ShouldAbortWithError(c *gin.Context, status int, message string, errs ...er
 		return true
 	}
 
-	c.Next()
 	return false
 }
