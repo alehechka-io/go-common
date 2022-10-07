@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 // Error represents the Error object structure
@@ -18,10 +17,11 @@ type Error struct {
 // Bool return value indicates whether or not to short-circuit
 func ShouldAbortWithError(c *gin.Context, status int, message string, errs ...error) bool {
 	var errors []Error
+	logger := GetLogger(c)
 
 	for _, err := range errs {
 		if err != nil {
-			log.WithError(err).Error(message)
+			logger.WithError(err).WithField("status", status).Error(message)
 			errors = append(errors, Error{
 				Status: status,
 				Title:  http.StatusText(status),
