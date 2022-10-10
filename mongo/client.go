@@ -10,8 +10,8 @@ import (
 )
 
 // InitializeDatabase initializes MongoDB database client
-func InitializeDatabase(uri string, db string) (database *mongo.Database, disconnect func() error, err error) {
-	timeoutContext, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+func InitializeDatabase(uri string, db string, timeout ...time.Duration) (database *mongo.Database, disconnect func() error, err error) {
+	timeoutContext, cancel := context.WithTimeout(context.Background(), append(timeout, 2*time.Second)[0])
 
 	client, err := mongo.Connect(timeoutContext, options.Client().ApplyURI(uri))
 
